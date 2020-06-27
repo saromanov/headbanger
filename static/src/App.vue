@@ -3,17 +3,16 @@
    <span v-bind:title="message"> Hello!
    </span>
    <div id="app-new-branch">
+     {{ active_branches }}
     <p>Create a new branch</p>
     <input v-model="branch_name">
     <button v-on:click="createBranch">Create</button>
   </div>
    <div class="branches" v-if="active_branches.length">
-      <tbody>
         <p> List of active branches> </p>
         <tr v-for="branch in active_branches" v-bind:key="index">
           <td>{{ branch.name }}</td>
         </tr>
-      </tbody>
    </div>
   </div>
 </template>
@@ -26,17 +25,18 @@ export default {
     return {
       message: new Date(),
       branch_name:'',
-      active_branches:[{name: "A", index:1},{name: "B", index:2}],
+      active_branches:[],
     }
   },
   methods: {
     createBranch:() => {
-      console.log('Create');
+      console.log('Create: ', this.active_branches);
     },
-    getActiveBranches: (req) => {
+    getActiveBranches: () => {
       const path = 'http://localhost:5000/api/data';
       axios.get(path)
         .then((res) => {
+          console.log(res.data.branches);
           this.active_branches = res.data.branches;
         })
         .catch((error) => {

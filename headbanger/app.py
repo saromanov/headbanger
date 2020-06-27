@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
 
 app = Flask(__name__, static_folder='static/dist')
-
+CORS(app)
 
 @app.route('/')
 def index():
@@ -12,27 +13,12 @@ def static_dist(path):
     return send_from_directory("static/dist", path)
 
 
-@app.route('/api/data')
+@app.route('/api/data', methods=['GET'])
 def languages():
     return jsonify({
-        'languages': [
-            'assembly',
-            'c#',
-            'c',
-            'c++',
-            'go',
-            'java',
-            'javascript',
-            'object c',
-            'pascal',
-            'perl',
-            'php',
-            'python',
-            'R',
-            'ruby',
-            'SQL',
-            'swift',
-            'visual basic',
+        'branches': [
+            {'name': 'assembly'},
+            {'name': 'c#'},
         ]
     })
 
