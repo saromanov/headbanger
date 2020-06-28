@@ -1,7 +1,7 @@
 from git import Repo
 
 class Git:
-    def __init__(repo_name:str):
+    def __init__(self, repo_name:str):
         self._repo = Repo(repo_name)
     
     def get_branches(self, *args, **kwargs):
