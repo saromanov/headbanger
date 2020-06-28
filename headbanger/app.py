@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 
+# https://tproger.ru/translations/developing-app-with-flask-and-vue-js/
+# https://ru.vuejs.org/v2/guide/index.html
 app = Flask(__name__, static_folder='static/dist')
 CORS(app)
 
