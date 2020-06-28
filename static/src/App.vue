@@ -19,6 +19,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   name: 'app',
   data () {
@@ -30,10 +31,17 @@ export default {
   },
   methods: {
     createBranch:() => {
-      console.log('Create: ', this.active_branches);
+      const path = 'http://localhost:5000/api/branches';
+      axios.post(path, {
+        name: this.branch_name,
+      }).then((res) => {
+        console.log('FINE');
+      }).catch((error) => {
+        console.error(error);
+      })
     },
     getActiveBranches: () => {
-      const path = 'http://localhost:5000/api/data';
+      const path = 'http://localhost:5000/api/branch_names';
       axios.get(path)
         .then((res) => {
           console.log(res.data.branches);
