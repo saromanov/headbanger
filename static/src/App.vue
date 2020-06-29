@@ -21,8 +21,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'app',
-  data () {
+  data:() =>{
     return {
       message: new Date(),
       branch_name:'',
@@ -31,6 +30,7 @@ export default {
   },
   methods: {
     createBranch:() => {
+      console.log("MESSAGE: ", this.message);
       const path = 'http://localhost:5000/api/branches';
       axios.post(path, {
         name: this.branch_name,

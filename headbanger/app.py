@@ -21,7 +21,7 @@ def configure_api(app:Flask, gt:Git):
     
     @app.route('/api/branches', methods=['POST'])
     def create_branch():
-        data = request.data
+        data = request.json
         print(data)
         return jsonify({"status": "ok"})
 
