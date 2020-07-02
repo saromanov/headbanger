@@ -5,7 +5,7 @@
    <div id="app-new-branch">
      {{ active_branches }}
     <p>Create a new branch</p>
-    <input v-model="branch_name">
+    <input type="text" v-model="branch_name" />
     <button v-on:click="createBranch">Create</button>
   </div>
    <div class="branches" v-if="active_branches.length">
@@ -21,16 +21,22 @@
 import axios from 'axios';
 
 export default {
-  data:() =>{
+
+  data(){
     return {
       message: new Date(),
       branch_name:'',
       active_branches:[],
     }
   },
+  props(){
+    return {
+      'data': 'branch',
+    }
+  },
   methods: {
     createBranch:() => {
-      console.log("MESSAGE: ", this.message);
+      console.log("MESSAGE: ", this.a.data.branch_name, this.branch_name);
       const path = 'http://localhost:5000/api/branches';
       axios.post(path, {
         name: this.branch_name,
