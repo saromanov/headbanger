@@ -22,7 +22,7 @@
                 </label>
         </tr>
         <br>
-        <button v-if="active_branches_svd.length"> Delete </button>
+        <button v-if="active_branches_svd.length" v-on:click="deleteBranches"> Delete </button>
    </div>
   </div>
 </template>
@@ -70,7 +70,10 @@ export default {
     deleteBranches: function(){
       const path = 'http://localhost:5000/api/branches';
       axios.delete(path, {
-        branches: this.active_branches_svd,
+        data: {
+          branches: this.active_branches_svd,
+          name:'a',
+        }
       }).then((res) => {
           console.log(res.data.branches);
         })

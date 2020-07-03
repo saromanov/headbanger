@@ -11,8 +11,7 @@ schema_create_branch = {
     'type': 'object',
     'properties': {
         'name': {'type': 'string'}
-    },
-    'required': ['name']
+    }
 }
 def create_app(congig=None):
     gt = Git(os.environ['HEADBANGER_REPO'])
@@ -40,6 +39,8 @@ def create_branch(gt:Git, req:request):
     return jsonify({"status": "ok"})
 
 def delete_branches(gt:Git, req:request):
-    pass
+    gt.delete_branches(request.json['branches'])
+    return jsonify({"status": "ok"})
+
 if __name__ == '__main__':
     create_app()
