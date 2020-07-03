@@ -6,3 +6,8 @@ class Git:
     
     def get_branches(self, *args, **kwargs):
         return self._repo.branches
+    
+    def create_branch(self, branch_name):
+        if not branch_name:
+            raise Exception('branch_name is not defined')
+        self._repo.create_head(branch_name) 

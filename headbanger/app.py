@@ -22,7 +22,9 @@ def configure_api(app:Flask, gt:Git):
     @app.route('/api/branches', methods=['POST'])
     def create_branch():
         data = request.json
-        print(data)
+        if 'name' not in data:
+            return jsonify({"status": "fail", "error": "branch name is not defined"})
+        gt.create_branch(data['name'])
         return jsonify({"status": "ok"})
 
 if __name__ == '__main__':
