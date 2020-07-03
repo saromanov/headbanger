@@ -4,17 +4,25 @@
    </span>
    {{message}}
    <div id="app-new-branch">
-     {{ active_branches }}
     <p>Create a new branch</p>
     <input type="text" v-model="branch_name" />
     <button v-on:click="createBranch">Create</button>
   </div>
    <div class="branches" v-if="active_branches.length">
-        <p> List of active branches> </p>
+        <p> List of active branches </p>
         <tr v-for="branch in active_branches" v-bind:key="index">
-          <td>{{ branch.name }}</td>
+          <label>
+              <input
+                type="checkbox"
+                v-model="active_branches_svd"
+                v-on:change="listBranchChecked"
+                :checked="active_branches_svd.indexOf(+branch.name)>-1"
+                :value="branch.name"/>
+                {{branch.name}}
+                </label>
         </tr>
-        <p> {{branch_name}} </p>
+        <br>
+        <button v-if="active_branches_svd.length"> Delete </button>
    </div>
   </div>
 </template>
@@ -26,10 +34,10 @@ import axios from 'axios';
 export default {
   data: function() {
     return {
-      name: 'home',
       message: '',
       branch_name:'',
       active_branches:[],
+      active_branches_svd:[],
     }
   },
   methods: {
@@ -53,6 +61,22 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    listBranchChecked: function(){
+      if(this.active_branches_svd.length == 0) {
+        return
+      }
+    },
+    deleteBranches: function(){
+      const path = 'http://localhost:5000/api/branches';
+      axios.delete(path, {
+        branches: this.active_branches_svd,
+      }).then((res) => {
+          console.log(res.data.branches);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   },
   created() {
@@ -71,6 +95,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   text-anchor: middle;
+}
+
+.branches {
+  position: relative;
+  width:100px;
 }
 
 h1, h2 {
