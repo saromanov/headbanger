@@ -46,7 +46,7 @@ export default {
       axios.post(path, {
         name: this.branch_name,
       }).then((res) => {
-        console.log('FINE');
+        this.getActiveBranches();
       }).catch((error) => {
         console.error(error);
       })
@@ -72,9 +72,9 @@ export default {
       axios.delete(path, {
         data: {
           branches: this.active_branches_svd,
-          name:'a',
         }
       }).then((res) => {
+          this.getActiveBranches();
           console.log(res.data.branches);
         })
         .catch((error) => {
