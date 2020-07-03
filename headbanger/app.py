@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, send_from_directory
+from flask_expects_json import expects_json
 from flask_cors import CORS
 from core.git import Git
 import os
@@ -6,6 +7,13 @@ import os
 # https://tproger.ru/translations/developing-app-with-flask-and-vue-js/
 # https://ru.vuejs.org/v2/guide/index.html
 
+schema_create_branch = {
+    'type': 'object',
+    'properties': {
+        'name': {'type': 'string'}
+    },
+    'required': ['name']
+}
 def create_app(congig=None):
     gt = Git(os.environ['HEADBANGER_REPO'])
     app = Flask(__name__, static_folder='static/dist')
@@ -20,17 +28,18 @@ def configure_api(app:Flask, gt:Git):
         return jsonify({"branches": list(map(lambda x: {'name': x.name}, gt.get_branches()))})
     
     @app.route('/api/branches', methods=['POST', 'DELETE'])
-    def create_branch():
+    @expects_json(schema_create_branch)
+    def handle_branches():
         if request.method == 'POST':
-            return create_branch_post(gt, request)
-    
+            return create_branch(gt, request)
+        if request.method == 'DELETE':
+            return delete_branches(gt, request)
 
-def create_branch_post(gt, req):
-      data = request.json
-      if 'name' not in data:
-          return jsonify({"status": "fail", "error": "branch name is not defined"})
-      gt.create_branch(data['name'])
-      return jsonify({"status": "ok"})
+def create_branch(gt:Git, req:request):
+    gt.create_branch(request.json['name'])
+    return jsonify({"status": "ok"})
 
+def delete_branches(gt:Git, req:request):
+    pass
 if __name__ == '__main__':
     create_app()
