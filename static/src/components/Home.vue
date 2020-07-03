@@ -2,6 +2,7 @@
   <div class="container">
    <span v-bind:title="message"> Hello!
    </span>
+   {{message}}
    <div id="app-new-branch">
      {{ active_branches }}
     <p>Create a new branch</p>
@@ -19,20 +20,20 @@
 </template>
 
 <script>
+'use strict'
 import axios from 'axios';
 
 export default {
-
-  data(){
+  data: function() {
     return {
-      message: new Date(),
-      branch_name:'aaaa',
+      name: 'home',
+      message: '',
+      branch_name:'',
       active_branches:[],
     }
   },
   methods: {
-    createBranch:() => {
-      console.log("MESSAGE: ", this, this.branch_name);
+    createBranch: function() {
       const path = 'http://localhost:5000/api/branches';
       axios.post(path, {
         name: this.branch_name,
@@ -42,7 +43,7 @@ export default {
         console.error(error);
       })
     },
-    getActiveBranches: () => {
+    getActiveBranches: function() {
       const path = 'http://localhost:5000/api/branch_names';
       axios.get(path)
         .then((res) => {
