@@ -1,6 +1,7 @@
 from git import Repo
 from .branch import create_branch, get_branches, delete_branches
-from .commits import get_commits 
+from .commits import get_commits
+
 class Git:
     def __init__(self, repo_name:str):
         self._repo = Repo(repo_name)
@@ -15,4 +16,5 @@ class Git:
         delete_branches(self._repo, branches)
 
     def get_commits(self, branch_name:str):
+        print(get_commits(branch_name))
         return get_commits(branch_name)

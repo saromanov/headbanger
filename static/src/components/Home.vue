@@ -8,6 +8,11 @@
     <input type="text" v-model="branch_name" />
     <button v-on:click="createBranch">Create</button>
   </div>
+  <div class="working-branch">
+    <select v-model="selected_branch" v-on:change="listCommits">
+      <option value="" v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
+    </select>
+  </div>
    <div class="branches" v-if="active_branches.length">
         <p> List of active branches </p>
         <tr v-for="branch in active_branches" v-bind:key="index">
@@ -15,7 +20,6 @@
               <input
                 type="checkbox"
                 v-model="active_branches_svd"
-                v-on:change="listBranchChecked"
                 :checked="active_branches_svd.indexOf(+branch.name)>-1"
                 :value="branch.name"/>
                 {{branch.name}}
@@ -23,6 +27,12 @@
         </tr>
         <br>
         <button v-if="active_branches_svd.length" v-on:click="deleteBranches"> Delete </button>
+   </div>
+
+   <div class="commits">
+     <tr v-for="commit in active_branch_commits" v-bind:key="idx">
+       {{commit.title}}
+     </tr>
    </div>
   </div>
 </template>
@@ -36,8 +46,10 @@ export default {
     return {
       message: '',
       branch_name:'',
+      selected_branch:'',
       active_branches:[],
       active_branches_svd:[],
+      active_branch_commits:[],
     }
   },
   methods: {
@@ -62,10 +74,19 @@ export default {
           console.error(error);
         });
     },
-    listBranchChecked: function(){
-      if(this.active_branches_svd.length == 0) {
-        return
-      }
+    listCommits: function(){
+      const path = 'http://localhost:5000/api/commits';
+      axios.get(path, {
+        data: {
+          branch_name: this.selected_branch,
+        }
+      }).then((res) => {
+          console.log(res.data.branches);
+          this.active_branches = res.data.branches;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     deleteBranches: function(){
       const path = 'http://localhost:5000/api/branches';
@@ -103,6 +124,8 @@ export default {
 .branches {
   position: relative;
   width:100px;
+  font-size: 20;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 h1, h2 {
