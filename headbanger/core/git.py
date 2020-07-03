@@ -1,4 +1,5 @@
 from git import Repo
+from branch import create_branch
 
 class Git:
     def __init__(self, repo_name:str):
@@ -8,9 +9,7 @@ class Git:
         return self._repo.branches
     
     def create_branch(self, branch_name):
-        if not branch_name:
-            raise Exception('branch_name is not defined')
-        self._repo.create_head(branch_name)
+        return create_branch(self._repo, branch_name)
     
     def delete_branches(self, branches):
         [self._repo.delete_head(name) for name in branches]
