@@ -19,13 +19,18 @@ def configure_api(app:Flask, gt:Git):
     def branch_names():
         return jsonify({"branches": list(map(lambda x: {'name': x.name}, gt.get_branches()))})
     
-    @app.route('/api/branches', methods=['POST'])
+    @app.route('/api/branches', methods=['POST', 'DELETE'])
     def create_branch():
-        data = request.json
-        if 'name' not in data:
-            return jsonify({"status": "fail", "error": "branch name is not defined"})
-        gt.create_branch(data['name'])
-        return jsonify({"status": "ok"})
+        if request.method == 'POST':
+            return create_branch_post(gt, request)
+    
+
+def create_branch_post(gt, req):
+      data = request.json
+      if 'name' not in data:
+          return jsonify({"status": "fail", "error": "branch name is not defined"})
+      gt.create_branch(data['name'])
+      return jsonify({"status": "ok"})
 
 if __name__ == '__main__':
     create_app()
