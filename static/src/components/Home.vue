@@ -10,9 +10,15 @@
   </div>
   <div class="working-branch">
     <p> Select branch: </p>
-    <select v-model="selected_branch" v-on:change="loadCommits">
-      <option value=""  v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
+    <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
+      <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
     </select>
+    <br>
+     <div class="working-branch-commits">
+      <tr v-for="commit in active_branch_commits" v-bind:key="idx">
+        {{commit.committed_datetime}} {{commit.message}}
+      </tr>
+   </div>
   </div>
    <div class="branches" v-if="active_branches.length">
         <p> List of active branches </p>
@@ -28,12 +34,6 @@
         </tr>
         <br>
         <button v-if="active_branches_svd.length" v-on:click="deleteBranches"> Delete </button>
-   </div>
-
-   <div class="commits">
-     <tr v-for="commit in active_branch_commits" v-bind:key="idx">
-       {{commit.title}}
-     </tr>
    </div>
   </div>
 </template>
@@ -76,10 +76,9 @@ export default {
         });
     },
     loadCommits: function(){
-      const path = 'http://localhost:5000/api/commits?branch_name=develop';
+      const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
       axios.get(path).then((res) => {
-          console.log(res.data.branches);
-          this.active_branches = res.data.branches;
+          this.active_branch_commits = res.data.commits;
         })
         .catch((error) => {
           console.error(error);
@@ -123,6 +122,18 @@ export default {
   width:100px;
   font-size: 20;
   font-family: 'Courier New', Courier, monospace;
+}
+
+.working-branch {
+  height: 10em;
+  position: relative;
+  margin: 0 auto;
+  width:500px;
+}
+
+.working-branch-commits {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
 }
 
 h1, h2 {
