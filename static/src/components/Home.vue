@@ -76,12 +76,8 @@ export default {
         });
     },
     loadCommits: function(){
-      const path = 'http://localhost:5000/api/commits';
-      axios.get(path, {
-        data: {
-          branch_name: this.selected_branch,
-        }
-      }).then((res) => {
+      const path = 'http://localhost:5000/api/commits?branch_name=develop';
+      axios.get(path).then((res) => {
           console.log(res.data.branches);
           this.active_branches = res.data.branches;
         })
