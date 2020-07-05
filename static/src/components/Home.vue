@@ -9,8 +9,9 @@
     <button v-on:click="createBranch">Create</button>
   </div>
   <div class="working-branch">
-    <select v-model="selected_branch" v-on:change="listCommits">
-      <option value="" v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
+    <p> Select branch: </p>
+    <select v-model="selected_branch" v-on:change="loadCommits">
+      <option value=""  v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
     </select>
   </div>
    <div class="branches" v-if="active_branches.length">
@@ -74,7 +75,7 @@ export default {
           console.error(error);
         });
     },
-    listCommits: function(){
+    loadCommits: function(){
       const path = 'http://localhost:5000/api/commits';
       axios.get(path, {
         data: {
