@@ -16,7 +16,12 @@
     <br>
      <div class="working-branch-commits">
       <tr v-for="commit in active_branch_commits" v-bind:key="idx">
-        {{commit.committed_datetime}} {{commit.message}}
+        <div class="commit-date">
+          {{commit.committed_datetime}}
+        </div>
+        <div class="commit-name">
+          {{commit.message}}
+        </div>
       </tr>
    </div>
   </div>
@@ -134,6 +139,10 @@ export default {
 .working-branch-commits {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
+}
+.commit-date {
+  font-size: 15px;
+  color: burlywood;
 }
 
 h1, h2 {
