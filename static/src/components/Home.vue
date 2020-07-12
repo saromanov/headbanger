@@ -22,6 +22,7 @@
         <div class="commit-name">
           {{commit.message}}
         </div>
+        <br>
       </tr>
    </div>
   </div>
@@ -143,6 +144,10 @@ export default {
 .commit-date {
   font-size: 15px;
   color: burlywood;
+  text-align: left;
+}
+.commit-name {
+  text-align:left;
 }
 
 h1, h2 {
