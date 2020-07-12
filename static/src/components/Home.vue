@@ -19,6 +19,7 @@
         <div class="commit-date">
           {{commit.committed_datetime}}
         </div>
+        ({{commit.author}})
         <div class="commit-name">
           {{commit.message}}
         </div>
