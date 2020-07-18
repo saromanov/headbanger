@@ -27,16 +27,16 @@
       </tr>
    </div>
   </div>
-   <div class="branches" v-if="active_branches.length">
-        <p> List of active branches </p>
-        <tr v-for="branch in active_branches" v-bind:key="index">
+   <div class="commit-filters" v-if="active_branch_commits.length > 0">
+        <p> Filters </p>
+        <tr v-for="author in active_branch_commits_authors" v-bind:key="index">
           <label>
               <input
                 type="checkbox"
                 v-model="active_branches_svd"
-                :checked="active_branches_svd.indexOf(+branch.name)>-1"
-                :value="branch.name"/>
-                {{branch.name}}
+                :checked="active_branches_svd.indexOf(+author)>-1"
+                :value="author"/>
+                {{author}}
                 </label>
         </tr>
         <br>
@@ -56,6 +56,7 @@ export default {
       branch_name:'',
       selected_branch:'',
       active_branches:[],
+      active_branch_commits_authors:[],
       active_branches_svd:[],
       active_branch_commits:[],
     }
@@ -86,6 +87,7 @@ export default {
       const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
       axios.get(path).then((res) => {
           this.active_branch_commits = res.data.commits;
+          this.active_branch_commits_authors = res.data.authors;
         })
         .catch((error) => {
           console.error(error);
