@@ -10,7 +10,7 @@
   </div>
   <div class="working-branch">
     <div class="search-commit" v-if="active_branch_commits.length > 0">
-        <input type="text" placeholder="search commits" v-model="branch_name" />
+        <input type="text" placeholder="search commits" v-model="search_commit" v-on:keyup="showSearchedCommits" />
     </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
@@ -58,6 +58,7 @@ export default {
       message: '',
       branch_name:'',
       selected_branch:'',
+      search_commits:'',
       active_branches:[],
       active_branch_commits_authors:[],
       active_branches_svd:[],
@@ -95,6 +96,9 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    showSearchedCommits: function(){
+      console.log(this.search_commit);
     },
     deleteBranches: function(){
       const path = 'http://localhost:5000/api/branches';
