@@ -9,6 +9,9 @@
     <button v-on:click="createBranch">Create</button>
   </div>
   <div class="working-branch">
+    <div class="search-commit" v-if="active_branch_commits.length > 0">
+        <input type="text" placeholder="search commits" v-model="branch_name" />
+    </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
       <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
@@ -132,7 +135,20 @@ export default {
   font-size: 20;
   font-family: 'Courier New', Courier, monospace;
 }
+.commit-date {
+  font-size: 15px;
+  color: burlywood;
+  text-align: left;
+}
+.commit-name {
+  text-align:left;
+}
 
+.search-commit {
+  height: 20px;
+  text-align: center;
+  color: #42b983;
+}
 .working-branch {
   height: 10em;
   position: relative;
@@ -143,14 +159,6 @@ export default {
 .working-branch-commits {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
-}
-.commit-date {
-  font-size: 15px;
-  color: burlywood;
-  text-align: left;
-}
-.commit-name {
-  text-align:left;
 }
 
 h1, h2 {
