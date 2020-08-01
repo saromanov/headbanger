@@ -114,6 +114,7 @@ export default {
         return;
       }
       this.active_branch_commits = this.active_branch_commits.filter((x) => {
+        console.log("TOTAL: ", x.stats);
         return x.message.indexOf(this.search_commit) > 0 ;
       });
     },
