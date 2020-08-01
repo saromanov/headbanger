@@ -98,10 +98,13 @@ export default {
         });
     },
     showSearchedCommits: function(){
-      let data = this.active_branch_commits.filter((x) => {
-        return x.message.indexOf(this.search_commit) == 0;
+      if(this.search_commit.length == 0) {
+        this.loadCommits();
+        return;
+      }
+      this.active_branch_commits = this.active_branch_commits.filter((x) => {
+        return x.message.indexOf(this.search_commit) > 0 ;
       });
-      console.log("DATA: ", data);
     },
     deleteBranches: function(){
       const path = 'http://localhost:5000/api/branches';
