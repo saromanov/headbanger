@@ -20,11 +20,16 @@
     <br>
      <div class="working-branch-commits">
       <tr v-for="commit in active_branch_commits" v-bind:key="idx">
-        <div class="commit-card">
+        <div class="commit-card" v-on:click="commitPopup">
+          <div class ="commit-id">
+            {{commit.id}}
+          </div>
           <div class="commit-date">
             {{commit.committed_datetime}}
           </div>
-          ({{commit.author}})
+          <div class="commit-author">
+            ({{commit.author}})
+          </div>
           <div class="commit-name">
             {{commit.message}}
           </div>
@@ -100,6 +105,9 @@ export default {
           console.error(error);
         });
     },
+    commitPopup: function(){
+      console.log("puppet popup");
+    },
     showSearchedCommits: function(){
       if(this.search_commit.length == 0) {
         this.loadCommits();
@@ -150,13 +158,23 @@ export default {
 }
 .commit-date {
   font-size: 15px;
-  color: burlywood;
+  color:dodgerblue;
   text-align: left;
 }
 .commit-name {
   text-align:left;
+  font-size: 20px;
+  font-family:'Times New Roman', Times, serif;
 }
 
+.commit-author {
+  text-align: left;
+  font-size: 17px;
+}
+.commit-id {
+  text-align: left;
+  font-size: 12px;
+}
 .commit-card {
   background-color: bisque;
 }
