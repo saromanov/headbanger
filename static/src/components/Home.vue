@@ -20,12 +20,14 @@
     <br>
      <div class="working-branch-commits">
       <tr v-for="commit in active_branch_commits" v-bind:key="idx">
-        <div class="commit-date">
-          {{commit.committed_datetime}}
-        </div>
-        ({{commit.author}})
-        <div class="commit-name">
-          {{commit.message}}
+        <div class="commit-card">
+          <div class="commit-date">
+            {{commit.committed_datetime}}
+          </div>
+          ({{commit.author}})
+          <div class="commit-name">
+            {{commit.message}}
+          </div>
         </div>
         <br>
       </tr>
@@ -155,6 +157,9 @@ export default {
   text-align:left;
 }
 
+.commit-card {
+  background-color: bisque;
+}
 .search-commit {
   height: 20px;
   text-align: center;
