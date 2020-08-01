@@ -16,6 +16,7 @@
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
       <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
     </select>
+    <button v-if="active_branch_commits.length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
      <div class="working-branch-commits">
       <tr v-for="commit in active_branch_commits" v-bind:key="idx">
