@@ -16,5 +16,4 @@ class Git:
         delete_branches(self._repo, branches)
 
     def get_commits(self, branch_name:str):
-        print(get_commits(self._repo, branch_name))
         return get_commits(self._repo, branch_name)

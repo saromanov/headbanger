@@ -19,19 +19,19 @@
     <button v-if="active_branch_commits.length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
      <div class="working-branch-commits">
-      <tr v-for="commit in active_branch_commits" v-bind:key="idx">
+      <tr v-for="commit in Object.keys(active_branch_commits)" v-bind:key="commit">
         <div class="commit-card" v-on:click="commitPopup">
           <div class ="commit-id">
-            {{commit.id}}
+            {{commit}}
           </div>
           <div class="commit-date">
-            {{commit.committed_datetime}}
+            {{active_branch_commits['committed_datetime']}}
           </div>
           <div class="commit-author">
-            ({{commit.author}})
+            ({{active_branch_commits['author']}})
           </div>
           <div class="commit-name">
-            {{commit.message}}
+            {{active_branch_commits['message']}}
           </div>
         </div>
         <br>
@@ -70,7 +70,7 @@ export default {
       active_branches:[],
       active_branch_commits_authors:[],
       active_branches_svd:[],
-      active_branch_commits:[],
+      active_branch_commits:{},
     }
   },
   methods: {
@@ -97,8 +97,13 @@ export default {
     },
     loadCommits: function(){
       const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
+      let app = this;
       axios.get(path).then((res) => {
-          this.active_branch_commits = res.data.commits;
+          var values = res.data.commits;
+          for (let index = 0; index < values.length; index++) {
+            console.log(values[index].id);
+            this.active_branch_commits[values[index].id] = values[index];
+          }
           this.active_branch_commits_authors = res.data.authors;
         })
         .catch((error) => {
