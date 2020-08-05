@@ -9,29 +9,29 @@
     <button v-on:click="createBranch">Create</button>
   </div>
   <div class="working-branch">
-    <div class="search-commit" v-if="active_branch_commits.length > 0">
+    <div class="search-commit" v-if="Object.keys(active_branch_commits).length > 0">
         <input type="text" placeholder="search commits" v-model="search_commit" v-on:keyup="showSearchedCommits" />
     </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
       <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
     </select>
-    <button v-if="active_branch_commits.length> 0" v-on:click="loadCommits"> Обновить </button>
+    <button v-if="Object.keys(active_branch_commits).length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
      <div class="working-branch-commits">
-      <tr v-for="commit in Object.keys(active_branch_commits)" v-bind:key="commit">
+      <tr v-for="commit of Object.keys(active_branch_commits)" v-bind:key="commit">
         <div class="commit-card" v-on:click="commitPopup">
           <div class ="commit-id">
             {{commit}}
           </div>
           <div class="commit-date">
-            {{active_branch_commits['committed_datetime']}}
+            {{active_branch_commits[commit].committed_datetime}}
           </div>
           <div class="commit-author">
-            ({{active_branch_commits['author']}})
+            ({{active_branch_commits[commit].author}})
           </div>
           <div class="commit-name">
-            {{active_branch_commits['message']}}
+            {{active_branch_commits[commit].message}}
           </div>
         </div>
         <br>
@@ -88,7 +88,6 @@ export default {
       const path = 'http://localhost:5000/api/branch_names';
       axios.get(path)
         .then((res) => {
-          console.log(res.data.branches);
           this.active_branches = res.data.branches;
         })
         .catch((error) => {
@@ -97,11 +96,9 @@ export default {
     },
     loadCommits: function(){
       const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
-      let app = this;
       axios.get(path).then((res) => {
           var values = res.data.commits;
           for (let index = 0; index < values.length; index++) {
-            console.log(values[index].id);
             this.active_branch_commits[values[index].id] = values[index];
           }
           this.active_branch_commits_authors = res.data.authors;
@@ -114,6 +111,7 @@ export default {
       console.log("puppet popup");
     },
     showSearchedCommits: function(){
+       console.log(this.active_branch_commits);
       if(this.search_commit.length == 0) {
         this.loadCommits();
         return;
