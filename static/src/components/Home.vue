@@ -19,8 +19,6 @@
     <button v-if="Object.keys(active_branch_commits).length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
      <div class="working-branch-commits">
-       alert({{Object.keys(active_branch_commits)}})
-       alert({{active_branches_svd}})
       <tr v-for="commit of Object.keys(active_branch_commits)" v-bind:key="commit.id">
         <div class="commit-card" v-on:click="commitPopup">
           <div class ="commit-id">
@@ -101,18 +99,17 @@ export default {
       this.active_branches_svd.push(45);
       axios.get(path).then((res) => {
           var values = res.data.commits;
-          let key = values[0] = values[0].id;
-          this.active_branch_commits = Object.assign({}, this.active_branch_commits, {key: values[0]});
-          this.active_branch_commits[values[0].id] = values[0];
-         /* for (let index = 0; index < values.length; index++) {
-            this.active_branch_commits[values[index].id] = values[index];
-          }*/
+          let commits = {}
+          for (let index = 0; index < values.length; index++) {
+             let key = values[index].id;
+             commits[key] = values[index];
+          }
+           this.active_branch_commits = Object.assign({}, this.active_branch_commits, commits);
           this.active_branch_commits_authors = res.data.authors;
         })
         .catch((error) => {
           console.error(error);
         });
-        this.active_branch_commits = Object.assign({}, this.active_branch_commits);
     },
     commitPopup: function(){
       console.log("puppet popup");
