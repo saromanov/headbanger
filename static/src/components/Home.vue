@@ -20,7 +20,7 @@
     <br>
      <div class="working-branch-commits">
       <tr v-for="commit of Object.keys(active_branch_commits)" v-bind:key="commit.id">
-        <div class="commit-card" v-on:click="commitPopup">
+        <div class="commit-card" v-on:click="commitPopup(commit)">
           <div class ="commit-id">
             {{commit}}
           </div>
@@ -111,8 +111,9 @@ export default {
           console.error(error);
         });
     },
-    commitPopup: function(){
-      console.log("puppet popup");
+    commitPopup: function(commit_id){
+      let commit = this.active_branch_commits[commit_id];
+      console.log(commit.stats);
     },
     showSearchedCommits: function(){
       if(this.search_commit.length == 0) {
