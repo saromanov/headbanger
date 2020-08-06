@@ -37,6 +37,12 @@
         <br>
       </tr>
    </div>
+   <div class="commit-changes">
+      <tr v-for="file of Object.keys(commit_changes)" v-bind:key="file">
+        {{file}} <br>
+
+      </tr>
+   </div>
   </div>
    <div class="commit-filters" v-if="Object.keys(active_branch_commits).length > 0">
         <p> Filters </p>
@@ -63,14 +69,15 @@ import axios from 'axios';
 export default {
   data: function() {
     return {
-      message: '',
-      branch_name:'',
-      selected_branch:'',
-      search_commit:'',
       active_branches:[],
       active_branch_commits_authors:[],
       active_branches_svd:[],
       active_branch_commits:{},
+      branch_name:'',
+      commit_changes:{},
+      message: '',
+      selected_branch:'',
+      search_commit:'',
     }
   },
   methods: {
@@ -104,7 +111,7 @@ export default {
              let key = values[index].id;
              commits[key] = values[index];
           }
-           this.active_branch_commits = Object.assign({}, this.active_branch_commits, commits);
+          this.active_branch_commits = Object.assign({}, this.active_branch_commits, commits);
           this.active_branch_commits_authors = res.data.authors;
         })
         .catch((error) => {
@@ -112,8 +119,7 @@ export default {
         });
     },
     commitPopup: function(commit_id){
-      let commit = this.active_branch_commits[commit_id];
-      console.log(commit.stats);
+      this.commit_changes = Object.assign({}, this.commit_changes, commit.stats);
     },
     showSearchedCommits: function(){
       if(this.search_commit.length == 0) {
