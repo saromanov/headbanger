@@ -14,12 +14,14 @@
     </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
-      <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="index" >{{branch.name}}</option>
+      <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="branch" >{{branch.name}}</option>
     </select>
     <button v-if="Object.keys(active_branch_commits).length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
      <div class="working-branch-commits">
-      <tr v-for="commit of Object.keys(active_branch_commits)" v-bind:key="commit">
+       alert({{Object.keys(active_branch_commits)}})
+       alert({{active_branches_svd}})
+      <tr v-for="commit of Object.keys(active_branch_commits)" v-bind:key="commit.id">
         <div class="commit-card" v-on:click="commitPopup">
           <div class ="commit-id">
             {{commit}}
@@ -38,7 +40,7 @@
       </tr>
    </div>
   </div>
-   <div class="commit-filters" v-if="active_branch_commits.length > 0">
+   <div class="commit-filters" v-if="Object.keys(active_branch_commits).length > 0">
         <p> Filters </p>
         <tr v-for="author in active_branch_commits_authors" v-bind:key="index">
           <label>
@@ -66,7 +68,7 @@ export default {
       message: '',
       branch_name:'',
       selected_branch:'',
-      search_commits:'',
+      search_commit:'',
       active_branches:[],
       active_branch_commits_authors:[],
       active_branches_svd:[],
@@ -96,22 +98,26 @@ export default {
     },
     loadCommits: function(){
       const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
+      this.active_branches_svd.push(45);
       axios.get(path).then((res) => {
           var values = res.data.commits;
-          for (let index = 0; index < values.length; index++) {
+          let key = values[0] = values[0].id;
+          this.active_branch_commits = Object.assign({}, this.active_branch_commits, {key: values[0]});
+          this.active_branch_commits[values[0].id] = values[0];
+         /* for (let index = 0; index < values.length; index++) {
             this.active_branch_commits[values[index].id] = values[index];
-          }
+          }*/
           this.active_branch_commits_authors = res.data.authors;
         })
         .catch((error) => {
           console.error(error);
         });
+        this.active_branch_commits = Object.assign({}, this.active_branch_commits);
     },
     commitPopup: function(){
       console.log("puppet popup");
     },
     showSearchedCommits: function(){
-       console.log(this.active_branch_commits);
       if(this.search_commit.length == 0) {
         this.loadCommits();
         return;
