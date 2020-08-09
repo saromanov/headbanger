@@ -59,6 +59,10 @@
         <br>
         <button v-if="active_branches_svd.length" v-on:click="deleteBranches"> Delete </button>
    </div>
+   <div id="commit-info" class="popup" v-bind:style="{ display: computedCommitPopupDisplay }">
+      This is a test message
+      <div class="cancel" onclick="closePopup();"></div>
+   </div>
   </div>
 </template>
 
@@ -75,9 +79,16 @@ export default {
       active_branch_commits:{},
       branch_name:'',
       commit_changes:{},
+      commit_popup_display:'none',
       message: '',
       selected_branch:'',
       search_commit:'',
+
+    }
+  },
+  computed: {
+    computedCommitPopupDisplay: function () {
+      return this.commit_popup_display;
     }
   },
   methods: {
@@ -101,6 +112,7 @@ export default {
           console.error(error);
         });
     },
+    // loading commits by the branch
     loadCommits: function(){
       const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
       this.active_branches_svd.push(45);
@@ -118,8 +130,13 @@ export default {
           console.error(error);
         });
     },
+    // showing of commit popup with info about commit
     commitPopup: function(commit_id){
-      this.commit_changes = Object.assign({}, this.commit_changes, commit.stats);
+      this.commit_popup_display = 'relative';
+      let data = this.active_branch_commits[commit_id];
+      if(data !== undefined) {
+
+      }
     },
     showSearchedCommits: function(){
       if(this.search_commit.length == 0) {
@@ -225,5 +242,43 @@ li {
 
 a {
   color: #42b983;
+}
+
+.popup {
+    position:fixed;
+    top:0px;
+    left:0px;
+	  bottom:0px;
+	  right:0px;
+    margin:auto;
+    width:200px;
+    height:150px;
+    font-family:verdana;
+    font-size:13px;
+    padding:10px;
+    background-color:rgb(240,240,240);
+    border:2px solid grey;
+    z-index:100000000000000000;
+}
+
+.cancel {
+    display:relative;
+    cursor:pointer;
+    margin:0;
+    float:right;
+    height:10px;
+    width:14px;
+    padding:0 0 5px 0;
+    background-color:red;
+    text-align:center;
+    font-weight:bold;
+    font-size:11px;
+    color:white;
+    border-radius:3px;
+    z-index:100000000000000000;
+}
+
+.cancel:hover {
+    background:rgb(255,50,50);
 }
 </style>
