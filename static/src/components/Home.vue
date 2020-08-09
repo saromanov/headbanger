@@ -59,7 +59,7 @@
         <br>
         <button v-if="active_branches_svd.length" v-on:click="deleteBranches"> Delete </button>
    </div>
-   <div id="commit-info" class="popup" v-bind:style="{ display: computedCommitPopupDisplay }">
+   <div id="commit-info" class="popup" v-bind:style="{ display: commitPopupDisplay }">
       This is a test message
       <div class="cancel" onclick="closePopup();"></div>
    </div>
@@ -79,7 +79,7 @@ export default {
       active_branch_commits:{},
       branch_name:'',
       commit_changes:{},
-      commit_popup_display:'none',
+      commitPopupDisplay:'none',
       message: '',
       selected_branch:'',
       search_commit:'',
@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     computedCommitPopupDisplay: function () {
-      return this.commit_popup_display;
+      return this.commitPopupDisplay;
     }
   },
   methods: {
@@ -132,7 +132,7 @@ export default {
     },
     // showing of commit popup with info about commit
     commitPopup: function(commit_id){
-      this.commit_popup_display = 'relative';
+      this.commitPopupDisplay = 'static'
       let data = this.active_branch_commits[commit_id];
       if(data !== undefined) {
 
