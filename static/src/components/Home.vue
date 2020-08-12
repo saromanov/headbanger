@@ -33,6 +33,12 @@
           <div class="commit-name">
             {{active_branch_commits[commit].message}}
           </div>
+          <div class="commit-stat-insertions">
+            +{{active_branch_commits[commit].stats.insertions}}
+          </div>
+          <div class="commit-stat-deletions">
+            -{{active_branch_commits[commit].stats.deletions}}
+          </div>
         </div>
         <br>
       </tr>
@@ -208,6 +214,15 @@ export default {
 }
 .commit-card {
   background-color: bisque;
+}
+.commit-stat-insertions {
+  position: relative;
+  color:green;
+  text-align: right;
+}
+.commit-stat-deletions {
+  color:red;
+  text-align: right;
 }
 .search-commit {
   height: 20px;
