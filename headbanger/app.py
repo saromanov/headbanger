@@ -26,6 +26,12 @@ def configure_api(app:Flask, gt:Git):
     def branch_names():
         return jsonify({"branches": gt.get_branches()})
     
+    @app.route('/api/fetch', methods=['GET'])
+    def checkout_branch():
+        branch_name = request.args.get('branch_name')
+        gt.checkout_branch(branch_name)
+        return jsonify({'status': 'ok'})
+
     @app.route('/api/commits', methods=['GET'])
     def commits():
         branch_name = request.args.get('branch_name')

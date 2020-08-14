@@ -14,7 +14,7 @@
     </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
-      <option v-bind:value="branch.name"
+      <option v-bind:value="branch"
         v-for="branch in active_branches"
         v-bind:style="[branch.is_remote ? {'background': '#AAA'}: {'background': '#FFF'}]"
         v-bind:key="branch" >{{branch.name}}</option>
@@ -123,9 +123,18 @@ export default {
     },
     // loading commits by the branch
     loadCommits: function(){
-      const path = 'http://localhost:5000/api/commits?branch_name=' + this.selected_branch;
       this.active_branches_svd.push(45);
-      axios.get(path).then((res) => {
+      var selected_branch = this.selected_branch;
+      if(selected_branch.is_remote) {
+        axios.get('http://localhost:5000/api/fetch?branch_name=' + selected_branch.name).then((res) => {
+
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+        return
+      }
+      axios.get('http://localhost:5000/api/commits?branch_name=' + selected_branch.name).then((res) => {
           var values = res.data.commits;
           let commits = {}
           for (let index = 0; index < values.length; index++) {

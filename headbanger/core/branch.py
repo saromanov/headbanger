@@ -16,6 +16,9 @@ def get_branches(repo, *args, **kwargs):
     branches.extend(remote_branches)
     return branches
 
+def checkout_branch(repo, branch_name):
+    repo.git.checkout('-b', branch_name.split("/")[1])
+
 def prepare_branch_list(branches, is_remote):
     return list(map(lambda x: {'name': x.name,'is_remote': is_remote},  branches))
 
