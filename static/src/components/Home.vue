@@ -14,7 +14,10 @@
     </div>
     <p> Select branch: </p>
     <select v-model="selected_branch" :required="true" v-on:change="loadCommits">
-      <option v-bind:value="branch.name" v-for="branch in active_branches" v-bind:key="branch" >{{branch.name}}</option>
+      <option v-bind:value="branch.name"
+        v-for="branch in active_branches"
+        v-bind:style="[branch.is_remote ? {'background': '#AAA'}: {'background': '#FFF'}]"
+        v-bind:key="branch" >{{branch.name}}</option>
     </select>
     <button v-if="Object.keys(active_branch_commits).length> 0" v-on:click="loadCommits"> Обновить </button>
     <br>
