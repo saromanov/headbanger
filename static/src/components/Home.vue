@@ -161,9 +161,14 @@ export default {
         this.loadCommits();
         return;
       }
-      this.active_branch_commits = this.active_branch_commits.filter((x) => {
-        console.log("TOTAL: ", x.stats);
-        return x.message.indexOf(this.search_commit) > 0 ;
+      console.log(this.active_branch_commits);
+      let tmpCommits = {}
+      this.active_branch_commits.forEach((key, value) => {
+        console.log(value)
+        if (this.active_branch_commits[x].message.indexOf(this.search_commit) > 0) {
+          tmpCommits[x] = this.active_branch_commits[x];
+        }
+      this.active_branch_commits = Object.assign({}, this.active_branch_commits, tmpCommits);
       });
     },
     deleteBranches: function(){
