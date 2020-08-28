@@ -102,14 +102,13 @@ export default {
       commitPopupDisplay:'none',
       message: '',
       menu:[{
-         header: true,
          title: 'Statistics',
+         href: '/stats',
          hiddenOnCollapse: true
       },
       {
-         header: true,
          title: 'About',
-         href: '/charts',
+         href: '/about',
          hiddenOnCollapse: true
       }
       ],
