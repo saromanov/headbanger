@@ -5,7 +5,10 @@
    {{message}}
 
    <template>
-      <sidebar-menu :menu="menu" />
+      <sidebar-menu :menu="menu"
+        :collapsed="collapsed"
+        :theme="white-theme"
+        :show-one-child="true"/>
   </template>
    <div id="app-new-branch">
     <p>Create a new branch</p>
@@ -100,9 +103,16 @@ export default {
       message: '',
       menu:[{
          header: true,
-         title: 'Main Navigation',
+         title: 'Statistics',
          hiddenOnCollapse: true
-      }],
+      },
+      {
+         header: true,
+         title: 'About',
+         href: '/charts',
+         hiddenOnCollapse: true
+      }
+      ],
       selected_branch:'',
       search_commit:'',
 
@@ -325,5 +335,29 @@ a {
 
 .cancel:hover {
     background:rgb(255,50,50);
+}
+
+#demo {
+  padding-left: 350px;
+  transition: 0.3s ease;
+}
+#demo.collapsed {
+  padding-left: 50px;
+}
+#demo.onmobile {
+  padding-left: 50px;
+}
+.sidebar-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: 0.5;
+  z-index: 900;
+}
+.demo {
+  padding: 50px;
 }
 </style>
