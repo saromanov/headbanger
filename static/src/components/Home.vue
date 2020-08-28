@@ -3,6 +3,10 @@
    <span v-bind:title="message"> Hello!
    </span>
    {{message}}
+
+   <template>
+      <sidebar-menu :menu="menu" />
+  </template>
    <div id="app-new-branch">
     <p>Create a new branch</p>
     <input type="text" v-model="branch_name" />
@@ -78,8 +82,12 @@
 <script>
 'use strict'
 import axios from 'axios';
+import { SidebarMenu } from 'vue-sidebar-menu'
 
 export default {
+  components: {
+    SidebarMenu
+  },
   data: function() {
     return {
       active_branches:[],
@@ -90,6 +98,11 @@ export default {
       commit_changes:{},
       commitPopupDisplay:'none',
       message: '',
+      menu:[{
+         header: true,
+         title: 'Main Navigation',
+         hiddenOnCollapse: true
+      }],
       selected_branch:'',
       search_commit:'',
 
